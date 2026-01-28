@@ -1,0 +1,21 @@
+# Build artifacts
+*.o
+*.a
+*.so
+*.dylib
+obj/
+bin/
+
+# Editor/IDE files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test outputs
+test_results.txt
