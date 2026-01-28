@@ -36,6 +36,16 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
+    if (gaussian_overlap_s(-0.5, beta, A, B) != 0.0) {
+        fprintf(stderr, "Expected zero overlap for negative exponent.\n");
+        return EXIT_FAILURE;
+    }
+
+    if (gaussian_overlap_s(alpha, 0.0, A, B) != 0.0) {
+        fprintf(stderr, "Expected zero overlap for non-positive exponent.\n");
+        return EXIT_FAILURE;
+    }
+
     printf("All gaussian overlap tests passed.\n");
     return EXIT_SUCCESS;
 }
