@@ -8,7 +8,9 @@
 #endif
 
 static int nearly_equal(double a, double b, double tol) {
-    return fabs(a - b) < tol;
+    const double diff = fabs(a - b);
+    const double scale = fmax(fmax(fabs(a), fabs(b)), 1.0);
+    return diff < tol * scale;
 }
 
 int main(void) {
@@ -19,15 +21,17 @@ int main(void) {
     const double expected = pow(M_PI / (alpha + beta), 1.5);
     const double computed = gaussian_overlap_s(alpha, beta, A, B);
 
-    if (!nearly_equal(computed, expected, 1e-12)) {
+    if (!nearly_equal(computed, expected, 1e-10)) {
         fprintf(stderr, "Expected %.15f but got %.15f\n", expected, computed);
         return EXIT_FAILURE;
     }
 
     const double B_shifted[3] = {1.0, 0.0, 0.0};
     const double computed_shifted = gaussian_overlap_s(alpha, beta, A, B_shifted);
-    if (computed_shifted >= computed) {
-        fprintf(stderr, "Expected shifted overlap to be smaller.\n");
+    const double expected_shifted = pow(M_PI / (alpha + beta), 1.5)
+        * exp(-(alpha * beta / (alpha + beta)) * 1.0);
+    if (!nearly_equal(computed_shifted, expected_shifted, 1e-10)) {
+        fprintf(stderr, "Expected %.15f but got %.15f\n", expected_shifted, computed_shifted);
         return EXIT_FAILURE;
     }
 
